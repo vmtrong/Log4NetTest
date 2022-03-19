@@ -1,5 +1,6 @@
 ﻿using log4net;
 using log4net.Appender;
+using log4net.Config;
 using log4net.Repository.Hierarchy;
 using System;
 using System.Configuration;
@@ -15,6 +16,9 @@ namespace Log4NetSimple
         private static ILog _log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         internal static void Setup()
         {
+            //https://tuanphamdg.wordpress.com/2015/01/01/log4net-trong-c-va-tam-quan-trong-cua-viec-tao-log-nhat-ky-lam-viec/
+            XmlConfigurator.Configure(new FileInfo("log4net.config"));
+
             // Change the file location
             // Solution 1
             var appender = (LogManager.GetRepository() as Hierarchy).Root.Appenders
