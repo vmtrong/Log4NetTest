@@ -10,7 +10,7 @@ namespace Log4NetSimple
         private static ILog _log;
         static void Main(string[] args)
         {
-            LogConfiguration.Setup();
+            LogConfig.Setup();
 
             _log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
