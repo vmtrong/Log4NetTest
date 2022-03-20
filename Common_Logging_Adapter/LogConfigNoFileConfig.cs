@@ -11,7 +11,7 @@ using log4net.Repository.Hierarchy;
 
 namespace Common_Logging_Adapter
 {
-    internal static class LogConfiguration
+    internal static class LogConfigNoFileConfig
     {
         internal static void SetupLog4net()
         {

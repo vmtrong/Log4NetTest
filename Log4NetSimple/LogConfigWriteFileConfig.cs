@@ -12,7 +12,7 @@ using System.Web;
 
 namespace Log4NetSimple
 {
-    internal static class LogConfig
+    internal static class LogConfigWriteFileConfig
     {
         static string _logPath = Path.GetTempPath() + @"\Log4NetSimple\";
         private static ILog _log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
@@ -36,7 +36,6 @@ namespace Log4NetSimple
 
             CreateLog4NetFile(configPath);
             XmlConfigurator.ConfigureAndWatch(new FileInfo(configPath));
-
 
             // Change the file location
             // Solution 1

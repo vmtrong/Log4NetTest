@@ -1,0 +1,106 @@
+﻿https://helpex.vn/question/ban-co-the-cau-hinh-log4net-trong-ma-thay-vi-su-dung-tep-cau-hinh-khong-5cbfccccae03f6340c34a551
+
+Phạm Tuấn Thành
+Phạm Tuấn Thành
+·
+10:29 20/03/2017
+10:29:34 20/03/2017
+GIẢI PHÁP CUỐI CÙNG: 1
+
+Đối với bất cứ ai có thể vấp ngã trong tương lai, đây là những gì tôi đã làm. Tôi đã thực hiện lớp tĩnh bên dưới:
+
+using log4net;
+using log4net.Repository.Hierarchy;
+using log4net.Core;
+using log4net.Appender;
+using log4net.Layout;
+ 
+namespace Spectrum.Logging
+{
+    public class Logger
+    {
+        public static void Setup()
+        {
+            Hierarchy hierarchy = (Hierarchy)LogManager.GetRepository();
+ 
+            PatternLayout patternLayout = new PatternLayout();
+            patternLayout.ConversionPattern = "%date [%thread] %-5level %logger - %message%newline";
+            patternLayout.ActivateOptions();
+ 
+            RollingFileAppender roller = new RollingFileAppender();
+            roller.AppendToFile = false;
+            roller.File = @"Logs\EventLog.txt";
+            roller.Layout = patternLayout;
+            roller.MaxSizeRollBackups = 5;
+            roller.MaximumFileSize = "1GB";
+            roller.RollingStyle = RollingFileAppender.RollingMode.Size;
+            roller.StaticLogFileName = true;            
+            roller.ActivateOptions();
+            hierarchy.Root.AddAppender(roller);
+ 
+            MemoryAppender memory = new MemoryAppender();
+            memory.ActivateOptions();
+            hierarchy.Root.AddAppender(memory);
+ 
+            hierarchy.Root.Level = Level.Info;
+            hierarchy.Configured = true;
+        }
+    }
+}
+Và sau đó, tất cả những gì tôi phải làm là thay thế mã nơi tôi gọi tệp XML bằng lệnh gọi sau:
+
+//XmlConfigurator.Configure(new FileInfo("app.config")); // Not needed anymore
+Logger.Setup();
+
+
+
+---------------------------------------------------------------------------
+Ngoài ra, bạn có thể tạo một thuộc tính tùy chỉnh kế thừa từ log4net.Config.ConfiguratorAttribution và mã cứng mà bạn cấu hình ở đó:
+
+using log4net.Appender;
+using log4net.Config;
+using log4net.Core;
+using log4net.Layout;
+using log4net.Repository;
+using log4net.Repository.Hierarchy;
+using System;
+using System.Reflection;
+ 
+namespace ConsoleApplication1
+{
+    [AttributeUsage(AttributeTargets.Assembly)]
+    public class MyConfiguratorAttribute : ConfiguratorAttribute
+    {
+        public MyConfiguratorAttribute()
+            : base(0)
+        {
+        }
+ 
+        public override void Configure(Assembly sourceAssembly, ILoggerRepository targetRepository)
+        {
+            var hierarchy = (Hierarchy)targetRepository;
+            var patternLayout = new PatternLayout();
+            patternLayout.ConversionPattern = "%date [%thread] %-5level %logger - %message%newline";
+            patternLayout.ActivateOptions();
+ 
+            var roller = new RollingFileAppender();
+            roller.AppendToFile = false;
+            roller.File = @"Logs\EventLog.txt";
+            roller.Layout = patternLayout;
+            roller.MaxSizeRollBackups = 5;
+            roller.MaximumFileSize = "1GB";
+            roller.RollingStyle = RollingFileAppender.RollingMode.Size;
+            roller.StaticLogFileName = true;
+            roller.ActivateOptions();
+            hierarchy.Root.AddAppender(roller);
+ 
+            hierarchy.Root.Level = Level.Info;
+            hierarchy.Configured = true;
+        }
+    }
+}
+Sau đó thêm phần sau vào tệp .cs:
+
+[assembly: ConsoleApplication1.MyConfigurator]
+
+---------------------------------------------------------------------------

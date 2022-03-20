@@ -11,7 +11,7 @@ namespace Common_Logging_Adapter
     {
         static void Main(string[] args)
         {
-            LogConfiguration.SetupLog4net();
+            LogConfigNoFileConfig.SetupLog4net();
 
             var logger = LogManager.GetLogger(typeof(Program));
 
