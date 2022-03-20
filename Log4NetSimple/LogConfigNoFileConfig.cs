@@ -47,8 +47,8 @@ namespace Log4NetSimple.Logging
             roller.PreserveLogFileNameExtension = true;
             
             var filter = new log4net.Filter.LevelRangeFilter();
-            filter.LevelMin = GetLogLevel("MinLogLevel");
-            filter.LevelMax = GetLogLevel("MaxLogLevel");
+            filter.LevelMin = GetLogLevel("MinLevel");
+            filter.LevelMax = GetLogLevel("MaxLevel");
             roller.AddFilter(filter);
             
             roller.ActivateOptions();
