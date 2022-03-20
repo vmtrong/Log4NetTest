@@ -35,8 +35,7 @@ namespace Log4NetSimple
             configPath += "\\log4net.config";
 
             CreateLog4NetFile(configPath);
-            XmlConfigurator.Configure(new FileInfo(configPath));
-
+            XmlConfigurator.ConfigureAndWatch(new FileInfo(configPath));
 
 
             // Change the file location
@@ -136,7 +135,7 @@ namespace Log4NetSimple
                         text.AppendLine("		<level value=\"DEBUG\" />");
                         text.AppendLine("		<appender-ref ref=\"console\" />");
                         text.AppendLine("		<appender-ref ref=\"file\" />");
-                        text.AppendLine("		<appender-ref ref=\"FileAppender\" />");
+                        text.AppendLine("		<!-- <appender-ref ref=\"FileAppender\" /> -->");
                         text.AppendLine("	</root>");
                         text.AppendLine();
                         text.AppendLine("	<!--ConsoleAppender: log ra màng hình, chỉ hiển thị khi ứng dụng có của sổ Console-->");
@@ -150,7 +149,7 @@ namespace Log4NetSimple
                         text.AppendLine("	<appender name=\"file\" type=\"log4net.Appender.RollingFileAppender\">");
                         text.AppendLine("		<!--<file value=\"C:\\Users\\${USERNAME}\\AppData\\Local\\Temp\\Log4NetSimple\" />-->");
                         text.AppendLine("		<!--Sử dung ${USERNAME} sẽ không đảm bảo nếu máy sử dụng tài khoản AD, sẽ ko tồn tại được dẫn này -> Sẽ đổi đường dẫn này trong code Program.cs-->");
-                        text.AppendLine("		<file value=\"Log\" />");
+                        text.AppendLine("		<file value=\"Log\\\" />");
                         text.AppendLine("		<appendToFile value=\"true\" /> <!--Cho phép ghi thêm dòng vào tệp-->");
                         text.AppendLine("		<datePattern value=\"'log'_yyyy-MM-dd'.log'\" />");
                         text.AppendLine("		<rollingStyle value=\"Composite\" /> <!--Đặt thành hỗn hợp để cho phép cuộn theo ngày và kích thước.-->");

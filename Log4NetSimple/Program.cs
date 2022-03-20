@@ -26,7 +26,7 @@ namespace Log4NetSimple
                 Thread.Sleep(500);
             }
 
-            //Console.ReadLine();
+            Console.ReadLine();
         }
     }
 }
