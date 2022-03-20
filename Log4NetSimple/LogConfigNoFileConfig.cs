@@ -60,7 +60,7 @@ namespace Log4NetSimple.Logging
             memory.ActivateOptions();
             hierarchy.Root.AddAppender(memory);
             */
-            hierarchy.Root.Level = Level.Emergency;
+            hierarchy.Root.Level = Level.All;
             hierarchy.Configured = true;
 
             _log.Info("\n\n==================== App START ====================");
